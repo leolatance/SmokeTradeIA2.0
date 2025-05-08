@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { verifyUser } from '../auth/users'
+import { verifyUser } from '../auth/Users.js'
 
 export default function Login({ setLoggedIn }) {
   const [email, setEmail] = useState('')

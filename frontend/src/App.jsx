@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { users } from './auth/users'
+import { users } from './auth/Users.js'
 import { getMarketAnalysis } from './lib/marketAnalysis'
 import Login from './components/Login'
 import CurrencySelector from './components/CurrencySelector'
