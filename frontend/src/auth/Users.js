@@ -8,6 +8,13 @@ export const users = [
     accessToken: "sk_prod_xyz123",
     plano: "premium",
     validade: "2024-12-31"
+  },
+  {
+    email: "leolatance@gmail.com",
+    passwordHash: "$2b$10$Dt70USwHjAMfYcJBkF3muuQ/29Uf0J6iLI5S94ZYcV5qVak/7Uu8G",
+    accessToken: "sk_prod_xyz123",
+    plano: "premium",
+    validade: "2024-12-31"
   }
 ];
 
