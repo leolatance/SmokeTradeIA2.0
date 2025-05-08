@@ -14,6 +14,6 @@ module.exports = defineConfig({
     port: 5173,
     strictPort: true // Impede a troca automática de porta
   },
-  base: '/', // Configuração crucial para o Vercel
+  base: './', // Configuração crucial para o Vercel
   publicDir: 'public' // Garante o diretório público correto
 });
