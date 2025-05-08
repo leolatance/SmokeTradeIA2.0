@@ -50,7 +50,6 @@ Thumbs.db
 *.sublime-workspace
 
 # Específico do projeto
-/src/auth/users.js
 /public/config.json
 *.userprefs
 *.tmp
