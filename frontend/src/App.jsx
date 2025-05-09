@@ -38,7 +38,7 @@ export default function App() {
         id: Date.now(),
         pair: selectedPair,
         analysis: analysis,
-        direction: Math.random() > 0.5 ? 'CALL' : 'PUT',
+        direction: Math.random() > 0.5 ? 'COMPRA' : 'VENDA',
         duration: selectedTime,
         timestamp: new Date().toLocaleString()
       }
@@ -78,23 +78,26 @@ export default function App() {
       </div>
 
       <button 
-        onClick={generateSignal}
-        className="w-full bg-roxo text-branco font-orbitron py-3 rounded-lg neon-effect mt-6"
-      >
-        Gerar Novo Sinal ({3 - signals.length} restantes)
-      </button>
+  onClick={generateSignal}
+  className="w-full bg-roxo text-branco font-heading py-3 rounded-lg 
+            hover:bg-roxo/90 transition-all duration-200
+            focus:ring-2 focus:ring-limao mt-6"
+>
+  Gerar Sinal ({3 - signals.length} restantes)
+</button>
 
-      <History historyReload={historyReload} />
+<History historyReload={historyReload} />
 
-      <button
-        onClick={() => {
-          localStorage.removeItem('smoketrade_token')
-          setLoggedIn(false)
-        }}
-        className="w-full mt-4 text-limao font-poppins hover:underline"
-      >
-        Sair
-      </button>
+<button
+  onClick={() => {
+    localStorage.removeItem('smoketrade_token')
+    setLoggedIn(false)
+  }}
+  className="w-full mt-4 text-limao font-body hover:text-roxo 
+            hover:underline transition-colors duration-200"
+>
+  Sair
+</button>
     </div>
   )
 }

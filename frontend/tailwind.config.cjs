@@ -6,15 +6,16 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        limao: '#32CD32',
-        fundo: '#0f2e1d',
-        roxo: '#6a0dad',
-        branco: '#f0f0f0',
-        cinza: '#1c1c1e'
+        limao: '#32CD32',         // ação principal
+        fundo: '#0f2e1d',         // fundo principal
+        roxo: '#6a0dad',         // realces psicodélicos
+        vermelho: '#FF4444',      // compra
+        branco: '#f0f0f0',       // texto em fundo escuro
+        cinza: '#1c1c1e',        // cartões e caixas
       },
       fontFamily: {
-        orbitron: ['Orbitron', 'sans-serif'],
-        poppins: ['Poppins', 'sans-serif']
+        heading: ['Orbitron', 'sans-serif'],  // mantido como classe utilitária
+        body: ['Poppins', 'sans-serif']       // tipografia principal alterada
       }
     },
   },
