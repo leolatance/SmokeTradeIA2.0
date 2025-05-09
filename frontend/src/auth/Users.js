@@ -15,7 +15,14 @@ export const users = [
     accessToken: "sk_prod_xyz123",
     plano: "premium",
     validade: "2024-12-31"
-  }
+  },
+  {
+  email: "lamine@gmail.com",
+  passwordHash: "$2b$10$Id2hwwQuumq5LoraRoJ.8ulqM4Qs8gbXH.42IXVRnFe.nbl.FOTWu",
+  accessToken: "sk_prod_xyz123",
+  plano: "premium",
+  validade: "2024-12-31"
+}
 ];
 
 // Função de verificação
