@@ -78,26 +78,37 @@ export default function App() {
       </div>
 
       <button 
-  onClick={generateSignal}
-  className="w-full bg-roxo text-branco font-heading py-3 rounded-lg 
-            hover:bg-roxo/90 transition-all duration-200
-            focus:ring-2 focus:ring-limao mt-6"
->
-  Gerar Sinal ({3 - signals.length} restantes)
-</button>
+        onClick={generateSignal}
+        className="w-full bg-roxo text-branco font-heading py-3 rounded-lg 
+                  hover:bg-roxo/90 transition-all duration-200
+                  focus:ring-2 focus:ring-limao mt-6"
+      >
+        Gerar Sinal ({3 - signals.length} restantes)
+      </button>
 
-<History historyReload={historyReload} />
+      <History historyReload={historyReload} />
 
-<button
-  onClick={() => {
-    localStorage.removeItem('smoketrade_token')
-    setLoggedIn(false)
-  }}
-  className="w-full mt-4 text-limao font-body hover:text-roxo 
-            hover:underline transition-colors duration-200"
->
-  Sair
-</button>
+      {/* Botão de acesso à corretora */}
+      <a
+        href="https://www.homebroker.com/ref/lTMcnb9N/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block w-full mt-6 text-center bg-limao text-cinza font-heading py-3 rounded-lg
+                   hover:bg-limao/80 transition-colors duration-200 shadow-md"
+      >
+        Acesse a Corretora
+      </a>
+
+      <button
+        onClick={() => {
+          localStorage.removeItem('smoketrade_token')
+          setLoggedIn(false)
+        }}
+        className="w-full mt-4 text-limao font-body hover:text-roxo 
+                  hover:underline transition-colors duration-200"
+      >
+        Sair
+      </button>
     </div>
   )
 }
