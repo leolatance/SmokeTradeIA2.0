@@ -65,19 +65,6 @@ export default function SignalDisplay({ signal, onRemove }) {
             "{signal.analysis}"
           </p>
         </div>
-
-        <div className="pt-2 border-t border-roxo/30">
-          <div className="flex justify-between text-xs md:text-sm">
-            <span className="text-branco/80 font-body">Expira em:</span>
-            <span className="text-limao font-medium">{formatTime(timeLeft)}</span>
-          </div>
-          <div className="h-1.5 md:h-2 bg-roxo/20 rounded-full mt-2">
-            <div 
-              className="h-full bg-limao rounded-full transition-all"
-              style={{ width: `${(timeLeft / (signal.duration * 60)) * 100}%` }}
-            />
-          </div>
-        </div>
       </div>
     </div>
   )
