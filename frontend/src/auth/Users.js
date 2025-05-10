@@ -22,7 +22,77 @@ export const users = [
   accessToken: "sk_prod_xyz123",
   plano: "premium",
   validade: "2024-12-31"
-}
+},
+{
+email: "purplehaze@smoketrade.com",
+passwordHash: "$2b$10$LzP9a/rBcCLe0azlqg3lwuFTXgpHarQKTayTrgS.z7cW6rMTzNihq",
+accessToken: "sk_prod_xyz123",
+plano: "premium",
+validade: "2024-12-31"
+},
+{
+  email: "ogkush@smoketrade.com",
+  passwordHash: "$2b$10$YlVbTNZNZOqovmsWiEyWaOJctIvYlAB4DJhd9f4YEqpzp0S0sxR0i",
+  accessToken: "sk_prod_xyz123",
+  plano: "premium",
+  validade: "2024-12-31"
+  },
+  {
+    email: "blueberry@smoketrade.com",
+    passwordHash: "$2b$10$ECBVXlbH/SigbtxZqtSf/.YU34tTgntQAtAiBXlIjkpjeHyJC7Xli",
+    accessToken: "sk_prod_xyz123",
+    plano: "premium",
+    validade: "2024-12-31"
+    },
+    {
+      email: "northernlights@smoketrade.com",
+      passwordHash: "$2b$10$34PyZFDwJ7Ykor.yCDbDRObnPNDj2iPqCldKy9RVWOSdxEn.hR0eq",
+      accessToken: "sk_prod_xyz123",
+      plano: "premium",
+      validade: "2024-12-31"
+      },
+      {
+        email: "greendream@smoketrade.com",
+        passwordHash: "$2b$10$yBL.45./pf.WT3HeMu3i7OcVohx.7LMk0R6v69WfTOiGRD8EBkvmm",
+        accessToken: "sk_prod_xyz123",
+        plano: "premium",
+        validade: "2024-12-31"
+        },
+        {
+          email: "whitewidow@smoketrade.com",
+          passwordHash: "$2b$10$LTlS6nzuzj1rAQhb0gB2LerdYyCOzcSdxfHsdis01Y8mzbNI9xSI2",
+          accessToken: "sk_prod_xyz123",
+          plano: "premium",
+          validade: "2024-12-31"
+          },
+          {
+            email: "gelatoxl@smoketrade.com",
+            passwordHash: "$2b$10$UjTiNYC5Oq7aEPT99HFiO.8ltYWkYbpiwQb9e3ecgEzbRlpJHDVXq",
+            accessToken: "sk_prod_xyz123",
+            plano: "premium",
+            validade: "2024-12-31"
+            },
+            {
+              email: "amnesiahaze@smoketrade.com",
+              passwordHash: "$2b$10$eBg4qD9Aq5QoQJmMHwFCEeLCJhKIh3o6zH9w1ATg98ql.EULrY2ku",
+              accessToken: "sk_prod_xyz123",
+              plano: "premium",
+              validade: "2024-12-31"
+              },
+              {
+                email: "sourdiesel@smoketrade.com",
+                passwordHash: "$2b$10$J8xOP5/fBNOJYuMDbCSjluOdEoqqRzwxLNfUhpsCAOmh1nA5E5Jim",
+                accessToken: "sk_prod_xyz123",
+                plano: "premium",
+                validade: "2024-12-31"
+                },
+                {
+                  email: "gorillaglue@smoketrade.com",
+                  passwordHash: "$2b$10$cOOlhC4xUJ4G/9Urg4RAqOTnvV8HstI3TcqpRhu67O1xEVuoAFqpa",
+                  accessToken: "sk_prod_xyz123",
+                  plano: "premium",
+                  validade: "2024-12-31"
+                  },
 ];
 
 // Função de verificação
