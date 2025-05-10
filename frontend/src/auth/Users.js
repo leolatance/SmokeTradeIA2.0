@@ -88,7 +88,7 @@ validade: "2024-12-31"
                 },
                 {
                   email: "gorillaglue@smoketrade.com",
-                  passwordHash: "$2b$10$cOOlhC4xUJ4G/9Urg4RAqOTnvV8HstI3TcqpRhu67O1xEVuoAFqpa",
+                  passwordHash: "$2b$10$E6iyot7.LLncXDFF4wQoT.Ejp.J9M2cOl99xFlRzW18pZZcnH8TUq",
                   accessToken: "sk_prod_xyz123",
                   plano: "premium",
                   validade: "2024-12-31"
