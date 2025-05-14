@@ -45,13 +45,6 @@ validade: "2024-12-31"
     validade: "2024-12-31"
     },
     {
-      email: "northernlights@smoketrade.com",
-      passwordHash: "$2b$10$34PyZFDwJ7Ykor.yCDbDRObnPNDj2iPqCldKy9RVWOSdxEn.hR0eq",
-      accessToken: "sk_prod_xyz123",
-      plano: "premium",
-      validade: "2024-12-31"
-      },
-      {
         email: "greendream@smoketrade.com",
         passwordHash: "$2b$10$yBL.45./pf.WT3HeMu3i7OcVohx.7LMk0R6v69WfTOiGRD8EBkvmm",
         accessToken: "sk_prod_xyz123",
