@@ -93,6 +93,41 @@ validade: "2024-12-31"
                     plano: "premium",
                     validade: "2024-12-31"
                     },
+                    {
+                      email: "zkittlez@smoketrade.com",
+                      passwordHash: "$2b$10$eisI9AhXEo9bP0jYHCQrsODYft36aOXkr8e/v0vQwNmRWCTTLnk1O",
+                      accessToken: "sk_prod_xyz123",
+                      plano: "premium",
+                      validade: "2024-12-31"
+                      },
+                      {
+                        email: "weddingcake@smoketrade.com",
+                        passwordHash: "$2b$10$aQB7o2oKYfKrdJIu3LtkOedpohomqQQwgVvJKejnj1diiF8m1s9du",
+                        accessToken: "sk_prod_xyz123",
+                        plano: "premium",
+                        validade: "2024-12-31"
+                        },
+                        {
+                          email: "runtz@smoketrade.com",
+                          passwordHash: "$2b$10$DZxpi4TCjHFE0m2DKOAPfeVrxEhnJuILHXn5R7TPKl9ke0dK02M2a",
+                          accessToken: "sk_prod_xyz123",
+                          plano: "premium",
+                          validade: "2024-12-31"
+                          },
+                          {
+                            email: "chemdawg@smoketrade.com",
+                            passwordHash: "$2b$10$ovcPO61bw2KSvhubQt1t2ut91p7kp2/Hh.a5E2HUcFgetWw3IEXIu",
+                            accessToken: "sk_prod_xyz123",
+                            plano: "premium",
+                            validade: "2024-12-31"
+                            },
+                            {
+                              email: "icecreamcake@smoketrade.com",
+                              passwordHash: "$2b$10$atVcjEKScB42BP4b5CqFm.Dk2o/Feldi2dyukESI.8lJQNBNJqXyW",
+                              accessToken: "sk_prod_xyz123",
+                              plano: "premium",
+                              validade: "2024-12-31"
+                              },
                   
 ];
 
