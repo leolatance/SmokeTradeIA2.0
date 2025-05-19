@@ -86,6 +86,14 @@ validade: "2024-12-31"
                   plano: "premium",
                   validade: "2024-12-31"
                   },
+                  {
+                    email: "lemonhaze@smoketrade.com",
+                    passwordHash: "$2b$10$hNEcRqOT015FuXVoBbKBzuPSRfhdQWHqJ.8FK7593lDWL5U9iW9Ri",
+                    accessToken: "sk_prod_xyz123",
+                    plano: "premium",
+                    validade: "2024-12-31"
+                    },
+                  
 ];
 
 // Função de verificação
