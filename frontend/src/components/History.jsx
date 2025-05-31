@@ -1,17 +1,44 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 export default function History({ historyReload }) {
-  const [history, setHistory] = useState([])
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
-    const savedHistory = JSON.parse(localStorage.getItem('signals_history') || '[]')
-    setHistory(savedHistory)
-  }, [historyReload])
+    const fetchHistory = async () => {
+      try {
+        const token = localStorage.getItem('smoketrade_token');
+        const response = await fetch('http://localhost:5000/api/signals', {
+          headers: {
+            'x-auth-token': token
+          }
+        });
+        
+        if (response.ok) {
+          const data = await response.json();
+          setHistory(data);
+        }
+      } catch (err) {
+        console.error('Erro ao buscar histórico:', err);
+      }
+    };
 
-  const handleClearHistory = () => {
-    localStorage.removeItem('signals_history')
-    setHistory([])
-  }
+    fetchHistory();
+  }, [historyReload]);
+
+  const handleClearHistory = async () => {
+    try {
+      const token = localStorage.getItem('smoketrade_token');
+      await fetch('http://localhost:5000/api/signals', {
+        method: 'DELETE',
+        headers: {
+          'x-auth-token': token
+        }
+      });
+      setHistory([]);
+    } catch (err) {
+      console.error('Erro ao limpar histórico:', err);
+    }
+  };
 
   return (
     <div className="bg-cinza p-4 rounded-lg mt-6">

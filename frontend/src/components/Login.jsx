@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { verifyUser } from '../auth/Users.js'
 
 export default function Login({ setLoggedIn }) {
   const [email, setEmail] = useState('')
@@ -7,14 +6,25 @@ export default function Login({ setLoggedIn }) {
   const [error, setError] = useState('')
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     
-    const user = await verifyUser(email, password)
-    if(user) {
-      localStorage.setItem('smoketrade_token', user.accessToken)
-      setLoggedIn(true)
-    } else {
-      setError('Credenciais inválidas ou acesso não autorizado')
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('smoketrade_token', data.token);
+        setLoggedIn(true);
+      } else {
+        setError(data.message || 'Credenciais inválidas');
+      }
+    } catch (err) {
+      setError('Erro ao conectar ao servidor');
     }
   }
 

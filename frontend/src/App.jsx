@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { users } from './auth/Users.js'
 import { getMarketAnalysis } from './lib/marketAnalysis'
 import Login from './components/Login'
 import CurrencySelector from './components/CurrencySelector'
@@ -16,12 +15,8 @@ export default function App() {
 
   useEffect(() => {
     const token = localStorage.getItem('smoketrade_token')
-    const user = users.find(u => u.accessToken === token)
-    
-    if(user && new Date(user.validade) > new Date()) {
+    if(token) {
       setLoggedIn(true)
-    } else {
-      localStorage.removeItem('smoketrade_token')
     }
   }, [])
 
@@ -33,24 +28,34 @@ export default function App() {
 
     try {
       const analysis = await getMarketAnalysis(selectedPair)
+      const token = localStorage.getItem('smoketrade_token')
       
-      const newSignal = {
-        id: Date.now(),
-        pair: selectedPair,
-        analysis: analysis,
-        direction: Math.random() > 0.5 ? 'COMPRA' : 'VENDA',
-        duration: selectedTime,
-        timestamp: new Date().toLocaleString()
+      const response = await fetch('http://localhost:5000/api/signals', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token
+        },
+        body: JSON.stringify({
+          pair: selectedPair,
+          analysis: analysis,
+          direction: Math.random() > 0.5 ? 'COMPRA' : 'VENDA',
+          duration: selectedTime
+        })
+      });
+
+      if (response.ok) {
+        const newSignal = await response.json();
+        setSignals(prev => [...prev, {
+          ...newSignal,
+          timestamp: new Date(newSignal.timestamp).toLocaleString()
+        }]);
+        setHistoryReload(!historyReload);
+      } else {
+        alert('Erro ao gerar sinal');
       }
-
-      setSignals(prev => [...prev, newSignal])
-      
-      const history = JSON.parse(localStorage.getItem('signals_history') || '[]')
-      localStorage.setItem('signals_history', JSON.stringify([newSignal, ...history]))
-      setHistoryReload(!historyReload)
-
     } catch {
-      alert('Erro ao gerar análise do mercado')
+      alert('Erro ao gerar análise do mercado');
     }
   }
 
@@ -62,7 +67,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen-mobile p-4 mx-auto max-w-6xl">
-      {/* Cabeçalho mantido igual */}
+      <header className="text-center mb-8">
+        <h1 className="text-4xl md:text-5xl text-limao font-orbitron mb-2">
+          SmokeTrade
+        </h1>
+        <p className="text-branco font-poppins">
+          Plataforma avançada de sinais de trading
+        </p>
+      </header>
       
       <CurrencySelector selectedPair={selectedPair} setSelectedPair={setSelectedPair} />
       <TimeSelector selectedTime={selectedTime} setSelectedTime={setSelectedTime} />
@@ -88,7 +100,6 @@ export default function App() {
 
       <History historyReload={historyReload} />
 
-      {/* Botão de acesso à corretora */}
       <a
         href="https://www.homebroker.com/ref/lTMcnb9N/"
         target="_blank"
