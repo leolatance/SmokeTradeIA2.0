@@ -1,9 +1,24 @@
 const express = require('express');
+const cors = require('cors');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const Signal = require('../models/Signal');
+const Signal = require('../models/Signal'); // Certifique-se de que seu modelo Signal está corretamente definido
 const User = require('../models/User');
 const { JWT_SECRET } = process.env;
+
+// Configure as opções de CORS para as rotas
+const corsOptions = {
+  origin: [
+    'http://localhost:5173',
+    'https://smoke-trade-ia-2-0.vercel.app'
+  ],
+  methods: ['GET', 'POST', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
+  credentials: true
+};
+
+// Aplique CORS em todas as rotas
+router.use(cors(corsOptions));
 
 // Middleware de autenticação
 const auth = async (req, res, next) => {
@@ -15,6 +30,7 @@ const auth = async (req, res, next) => {
     req.user = await User.findById(decoded.id).select('-password');
     next();
   } catch (e) {
+    console.error('Erro de autenticação do token:', e.message); // Log mais detalhado
     res.status(400).json({ message: 'Token inválido' });
   }
 };
@@ -22,6 +38,14 @@ const auth = async (req, res, next) => {
 // Criar novo sinal
 router.post('/', auth, async (req, res) => {
   const { pair, analysis, direction, duration } = req.body;
+
+  // --- Adicionado para depuração ---
+  console.log('Requisição POST para /api/signals recebida:');
+  console.log('pair:', pair);
+  console.log('analysis:', analysis);
+  console.log('direction:', direction);
+  console.log('duration:', duration);
+  // --- Fim da depuração ---
   
   try {
     const newSignal = new Signal({
@@ -33,9 +57,14 @@ router.post('/', auth, async (req, res) => {
     });
 
     await newSignal.save();
-    res.json(newSignal);
+    res.status(201).json(newSignal); // Retorna 201 Created para sucesso na criação
   } catch (err) {
-    res.status(500).json({ message: 'Erro ao salvar sinal' });
+    console.error('Erro ao salvar sinal no MongoDB:', err); // Log mais detalhado do erro
+    // Em caso de erro de validação (por exemplo, campos 'required' ausentes), o status costuma ser 400
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ message: err.message, errors: err.errors });
+    }
+    res.status(500).json({ message: 'Erro interno do servidor ao salvar sinal', error: err.message });
   }
 });
 
@@ -45,6 +74,7 @@ router.get('/', auth, async (req, res) => {
     const signals = await Signal.find({ userId: req.user._id }).sort({ timestamp: -1 });
     res.json(signals);
   } catch (err) {
+    console.error('Erro ao obter sinais:', err); // Adicionado log
     res.status(500).json({ message: 'Erro ao obter sinais' });
   }
 });
@@ -55,8 +85,27 @@ router.delete('/', auth, async (req, res) => {
     await Signal.deleteMany({ userId: req.user._id });
     res.json({ message: 'Histórico limpo' });
   } catch (err) {
+    console.error('Erro ao limpar histórico:', err); // Adicionado log
     res.status(500).json({ message: 'Erro ao limpar histórico' });
   }
 });
 
+// Rota para deletar um sinal específico
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    const signal = await Signal.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+
+    if (!signal) {
+      return res.status(404).json({ message: 'Sinal não encontrado ou não autorizado' });
+    }
+
+    res.json({ message: 'Sinal removido com sucesso' });
+  } catch (err) {
+    console.error('Erro ao remover sinal específico:', err); // Log mais detalhado
+    res.status(500).json({ message: 'Erro ao remover sinal' });
+  }
+});
+
 module.exports = router;
+
+console.log('📦 Carregando signals.js rotas');

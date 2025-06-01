@@ -7,31 +7,25 @@ const signalRoutes = require('./routes/signals');
 
 const app = express();
 
-// Configuração de CORS mais permissiva para desenvolvimento
-app.use(cors({
-  origin: '*', // Permite todas as origens (em produção, restrinja!)
+// Configuração CORRETA do CORS
+const corsOptions = {
+  origin: [
+    'http://localhost:5173', // Frontend local
+    'https://seu-frontend-na-vercel.vercel.app' // Seu domínio na Vercel
+  ],
   methods: ['GET', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'x-auth-token']
-}));
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'], // CORRIGIDO: array de strings
+  credentials: true
+};
 
+// Middlewares
+app.use(cors(corsOptions)); // Aplicar as opções corretas
 app.use(express.json());
 
 // Conexão com MongoDB
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('✅ Conectado ao MongoDB'))
-  .catch(err => {
-    console.error('❌ Erro na conexão com MongoDB:', err.message);
-    console.log('Verifique:');
-    console.log('1. Sua string de conexão MONGODB_URI no .env');
-    console.log('2. Se seu IP está autorizado no MongoDB Atlas');
-    console.log('3. Se o cluster está ativo no MongoDB Atlas');
-  });
-
-// Middleware de log para todas as requisições
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-  next();
-});
+  .catch(err => console.error('❌ Erro na conexão:', err));
 
 // Rota raiz
 app.get('/', (req, res) => {
@@ -45,6 +39,11 @@ app.get('/', (req, res) => {
       auth: {
         login: "POST /api/auth/login",
         test: "GET /api/auth/test"
+      },
+      signals: {
+        create: "POST /api/signals",
+        history: "GET /api/signals",
+        clear: "DELETE /api/signals"
       }
     }
   });
@@ -52,12 +51,10 @@ app.get('/', (req, res) => {
 
 // Rota de saúde
 app.get('/api/health', (req, res) => {
-  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
-  
-  res.json({
+  res.json({ 
     status: 'online',
-    database: dbStatus,
-    uptime: `${process.uptime().toFixed(2)} seconds`,
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    uptime: process.uptime().toFixed(2) + ' seconds',
     timestamp: new Date().toISOString(),
     nodeVersion: process.version,
     platform: process.platform
@@ -87,13 +84,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Configuração do servidor
+// Iniciar servidor
 const PORT = process.env.PORT || 5001;
-const HOST = '0.0.0.0'; // Importante para aceitar conexões externas
+const HOST = '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
   console.log('================================================');
-  console.log(`🚀 Servidor iniciado em http://${HOST}:${PORT}`);
+  console.log(`🚀 Servidor rodando em http://${HOST}:${PORT}`);
   console.log(`🟢 Health Check: http://localhost:${PORT}/api/health`);
   console.log(`🌐 Endpoint raiz: http://localhost:${PORT}/`);
   console.log('================================================');

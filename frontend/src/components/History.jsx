@@ -1,21 +1,30 @@
 import { useEffect, useState } from 'react';
 
-export default function History({ historyReload }) {
+export default function History({ historyReload, onClearActiveSignals }) {
   const [history, setHistory] = useState([]);
 
   useEffect(() => {
     const fetchHistory = async () => {
       try {
         const token = localStorage.getItem('smoketrade_token');
-        const response = await fetch('http://localhost:5000/api/signals', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/signals`, {
           headers: {
             'x-auth-token': token
-          }
+          },
+          credentials: 'include'
         });
         
         if (response.ok) {
           const data = await response.json();
           setHistory(data);
+        } else {
+          const errorData = await response.json(); 
+          console.error('Falha ao buscar histórico do backend:', errorData);
+          if (errorData.message === 'Token inválido' && window.location.pathname !== '/') { 
+              localStorage.removeItem('smoketrade_token');
+              alert('Sua sessão expirou. Por favor, faça login novamente.');
+              window.location.href = '/'; 
+          }
         }
       } catch (err) {
         console.error('Erro ao buscar histórico:', err);
@@ -25,16 +34,61 @@ export default function History({ historyReload }) {
     fetchHistory();
   }, [historyReload]);
 
-  const handleClearHistory = async () => {
+  const handleRemoveSignal = async (signalId) => {
     try {
       const token = localStorage.getItem('smoketrade_token');
-      await fetch('http://localhost:5000/api/signals', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/signals/${signalId}`, {
         method: 'DELETE',
         headers: {
           'x-auth-token': token
-        }
+        },
+        credentials: 'include'
       });
-      setHistory([]);
+
+      if (response.ok) {
+        setHistory(prevHistory => prevHistory.filter(signal => signal._id !== signalId));
+        console.log(`Sinal ${signalId} removido do histórico com sucesso.`);
+      } else {
+        const errorData = await response.json(); 
+        console.error('Falha ao remover sinal do histórico (Backend response):', errorData);
+        if (errorData.message === 'Token inválido' && window.location.pathname !== '/') {
+            localStorage.removeItem('smoketrade_token');
+            alert('Sua sessão expirou. Por favor, faça login novamente.');
+            window.location.href = '/';
+        }
+      }
+    } catch (err) {
+      console.error('Erro ao remover sinal:', err);
+    }
+  };
+
+  const handleClearHistory = async () => {
+    try {
+      const token = localStorage.getItem('smoketrade_token');
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/signals`, {
+        method: 'DELETE',
+        headers: {
+          'x-auth-token': token
+        },
+        credentials: 'include'
+      });
+      
+      if (response.ok) {
+        setHistory([]);
+        if (onClearActiveSignals) {
+          onClearActiveSignals();
+          console.log('Sinais ativos também foram limpos no frontend.');
+        }
+        console.log('Histórico limpo com sucesso no frontend e backend.');
+      } else {
+        const errorData = await response.json(); 
+        console.error('Falha ao limpar histórico no backend:', errorData);
+        if (errorData.message === 'Token inválido' && window.location.pathname !== '/') {
+            localStorage.removeItem('smoketrade_token');
+            alert('Sua sessão expirou. Por favor, faça login novamente.');
+            window.location.href = '/';
+        }
+      }
     } catch (err) {
       console.error('Erro ao limpar histórico:', err);
     }
@@ -48,20 +102,28 @@ export default function History({ historyReload }) {
         <p className="text-branco font-body">Nenhum sinal gerado ainda</p>
       ) : (
         <div className="space-y-3">
-          {history.map((signal, index) => (
-            <div key={index} className="bg-fundo p-3 rounded-lg">
+          {history.map((signal) => (
+            <div key={signal._id} className="bg-fundo p-3 rounded-lg">
               <div className="flex justify-between items-center">
                 <div>
                   <span className="font-heading text-branco">{signal.pair}</span>
                   <p className="text-sm text-branco/70 font-body">{signal.timestamp}</p>
                 </div>
-                <span className={`px-3 py-1 rounded-lg ${
-                  signal.direction === 'COMPRA' 
-                    ? 'bg-limao/20 text-limao' 
-                    : 'bg-vermelho/20 text-vermelho'
-                } font-body text-sm`}>
-                  {signal.direction}
-                </span>
+                <div className="flex items-center">
+                    <span className={`px-3 py-1 rounded-lg ${
+                      signal.direction === 'COMPRA' 
+                        ? 'bg-limao/20 text-limao' 
+                        : 'bg-vermelho/20 text-vermelho'
+                    } font-body text-sm mr-2`}>
+                      {signal.direction}
+                    </span>
+                    <button
+                        onClick={() => handleRemoveSignal(signal._id)}
+                        className="text-roxo hover:text-limao text-sm md:text-base transition-colors"
+                    >
+                        ✕
+                    </button>
+                </div>
               </div>
             </div>
           ))}

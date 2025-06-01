@@ -5,10 +5,10 @@ export default function CurrencySelector({ selectedPair, setSelectedPair }) {
     'USD/JPY',
     'EUR/GBP',
     'BTC/USD',
-    'BTC/OTC',
+    'BTC/OTC', // <-- Manter BTC/OTC aqui para que o usuário possa selecioná-lo
     'ETH/EUR',
     'XAU/USD',
-    'APPLE/OTC'
+    // 'APPLE/OTC' // <-- REMOVIDO, pois não é bem suportado pela Alpha Vantage gratuita para indicadores
   ]
 
   return (

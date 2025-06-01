@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 
 export default function SignalDisplay({ signal, onRemove }) {
+  // Usamos signal._id para o ID que será passado para onRemove
+  // e signal.duration para o timeLeft
   const [timeLeft, setTimeLeft] = useState(signal.duration * 60)
 
   useEffect(() => {
@@ -8,7 +10,8 @@ export default function SignalDisplay({ signal, onRemove }) {
       setTimeLeft(prev => {
         if(prev <= 1) {
           clearInterval(timer)
-          onRemove(signal.id)
+          // Passa signal._id para a função onRemove
+          onRemove(signal._id) 
           return 0
         }
         return prev - 1
@@ -16,7 +19,7 @@ export default function SignalDisplay({ signal, onRemove }) {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [onRemove, signal.id])
+  }, [onRemove, signal._id]) // Adicionado signal._id aqui para a dependência do useEffect
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60)
@@ -27,7 +30,8 @@ export default function SignalDisplay({ signal, onRemove }) {
   return (
     <div className="bg-cinza p-4 md:p-6 rounded-lg relative animate-pulse">
       <button
-        onClick={() => onRemove(signal.id)}
+        // Passa signal._id para a função onRemove ao clicar
+        onClick={() => onRemove(signal._id)}
         className="absolute top-2 right-2 text-roxo hover:text-limao text-sm md:text-base transition-colors"
       >
         ✕
@@ -43,21 +47,21 @@ export default function SignalDisplay({ signal, onRemove }) {
 
         {/* Nova seção de entrada adicionada aqui */}
         <div className="flex justify-between items-start">
-          <span className="text-branco font-body text-sm md:text-base">Entrada:</span>
-          <span className="text-limao font-heading text-sm md:text-base">
+          <span className="text-branco font-body text-sm md:text-base">Entre em:</span>
+          <span className="text-limao font-heading text-sm md::text-base">
             {signal.timestamp}
           </span>
         </div>
 
         <div className="text-center">
-  <p className={`text-2xl md:text-3xl font-heading ${
-    signal.direction === 'VENDA' || signal.direction === 'PUT' 
-      ? 'text-vermelho' 
-      : 'text-limao'
-  }`}>
-    {signal.direction}
-  </p>
-</div>
+          <p className={`text-2xl md:text-3xl font-heading ${
+            signal.direction === 'VENDA' || signal.direction === 'PUT' 
+              ? 'text-vermelho' 
+              : 'text-limao'
+          }`}>
+            {signal.direction}
+          </p>
+        </div>
 
         <div className="space-y-2">
           <p className="text-branco font-body text-xs md:text-sm">Análise da IA:</p>

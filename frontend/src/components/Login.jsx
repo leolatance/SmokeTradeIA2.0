@@ -13,6 +13,7 @@ export default function Login({ setLoggedIn }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
+        credentials: 'include' // Adicionado para incluir cookies
       });
 
       const data = await response.json();
