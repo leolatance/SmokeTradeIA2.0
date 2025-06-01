@@ -11,7 +11,7 @@ const app = express();
 const corsOptions = {
   origin: [
     'http://localhost:5173', // Frontend local
-    'https://seu-frontend-na-vercel.vercel.app' // Seu domínio na Vercel
+    'https://smoke-trade-ia-2-0.vercel.app/' // Seu domínio na Vercel
   ],
   methods: ['GET', 'POST', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'], // CORRIGIDO: array de strings
