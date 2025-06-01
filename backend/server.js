@@ -7,19 +7,21 @@ const signalRoutes = require('./routes/signals');
 
 const app = express();
 
-// Configuração CORRETA do CORS
+// Configuração CORRETA e centralizada do CORS
 const corsOptions = {
   origin: [
     'http://localhost:5173', // Frontend local
-    'https://smoke-trade-ia-2-0.vercel.app/' // Seu domínio na Vercel
+    'https://smoke-trade-ia-2-0.vercel.app', // Seu domínio na Vercel (sem a barra final é mais seguro)
+    // Se você tiver um domínio customizado no Vercel, adicione-o aqui também:
+    // 'https://seunomedominiocustomizado.com',
   ],
-  methods: ['GET', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'], // CORRIGIDO: array de strings
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Inclua OPTIONS para requisições preflight
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'], // CORRIGIDO: array de strings com todos os headers
   credentials: true
 };
 
 // Middlewares
-app.use(cors(corsOptions)); // Aplicar as opções corretas
+app.use(cors(corsOptions)); // Aplicar as opções corretas GLOBALMENTE
 app.use(express.json());
 
 // Conexão com MongoDB
@@ -38,12 +40,13 @@ app.get('/', (req, res) => {
       health: "/api/health",
       auth: {
         login: "POST /api/auth/login",
-        test: "GET /api/auth/test"
+        // test: "GET /api/auth/test" // Removido, não vejo essa rota em auth.js
       },
       signals: {
         create: "POST /api/signals",
         history: "GET /api/signals",
-        clear: "DELETE /api/signals"
+        clear: "DELETE /api/signals",
+        deleteSpecific: "DELETE /api/signals/:id" // Adicionado para clareza
       }
     }
   });
@@ -86,7 +89,7 @@ app.use((err, req, res, next) => {
 
 // Iniciar servidor
 const PORT = process.env.PORT || 5001;
-const HOST = '0.0.0.0';
+const HOST = '0.0.0.0'; // Usar 0.0.0.0 para que o servidor seja acessível externamente no Render
 
 app.listen(PORT, HOST, () => {
   console.log('================================================');

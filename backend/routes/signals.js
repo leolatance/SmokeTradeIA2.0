@@ -1,24 +1,10 @@
 const express = require('express');
-const cors = require('cors');
+const cors = require('cors'); // Ainda precisamos importar se outras rotas usarem globalmente ou você reintroduzir o CORS em outro lugar
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const Signal = require('../models/Signal'); // Certifique-se de que seu modelo Signal está corretamente definido
 const User = require('../models/User');
 const { JWT_SECRET } = process.env;
-
-// Configure as opções de CORS para as rotas
-const corsOptions = {
-  origin: [
-    'http://localhost:5173',
-    'https://smoke-trade-ia-2-0.vercel.app'
-  ],
-  methods: ['GET', 'POST', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
-  credentials: true
-};
-
-// Aplique CORS em todas as rotas
-router.use(cors(corsOptions));
 
 // Middleware de autenticação
 const auth = async (req, res, next) => {
