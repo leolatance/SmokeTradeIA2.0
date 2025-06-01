@@ -92,8 +92,9 @@ export default function App() {
         setMarketMessage(analysis); // (Ex: "MERCADO FECHADO!")
         setIsMarketClosed(true); // Garante que o botão continue desabilitado
       } else if (!isReal) { // Se o sinal é simulado por outros motivos (API esgotada ou par não mapeado/OTC)
-        // *** MUDANÇA AQUI: Mensagem mais específica para simulação em mercado aberto ***
-        setMarketMessage(`Aviso: Viagem Simulada para ${selectedPair}. Dados reais indisponíveis agora.`);
+        // A linha abaixo foi removida para eliminar a mensagem de aviso de "Viagem Simulada"
+        // setMarketMessage(`Aviso: Viagem Simulada para ${selectedPair}. Dados reais indisponíveis agora.`);
+        setMarketMessage(''); // Limpa a mensagem se for simulado e não for por mercado fechado
         setIsMarketClosed(false); // O botão NÃO deve ser desabilitado, pois não é um fechamento de mercado por horário
       } else { // Se o sinal é real (dados da API recebidos com sucesso)
         setMarketMessage(''); // Limpa qualquer mensagem de aviso
