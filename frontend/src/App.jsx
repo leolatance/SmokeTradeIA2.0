@@ -1,15 +1,12 @@
 import { useState, useEffect } from 'react';
-
 // Importar getMarketAnalysis e isMarketOpen como checkMarketOpenStatus
 import { getMarketAnalysis, isMarketOpen as checkMarketOpenStatus } from './lib/marketAnalysis';
-
 import Login from './components/Login';
 import CurrencySelector from './components/CurrencySelector';
 import TimeSelector from './components/TimeSelector';
 import SignalDisplay from './components/SignalDisplay';
 import History from './components/History';
 import BankManagement from './components/BankManagement';
-
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -34,7 +31,7 @@ export default function App() {
   // e atualizar o isMarketClosed e marketMessage quando o par muda ou o tempo passa
   useEffect(() => {
     const updateMarketStatus = () => {
-        // *** CORREÇÃO APLICADA AQUI: Passa selectedPair para checkMarketOpenStatus ***
+        // *** CORREÇÃO AQUI: Passa selectedPair para checkMarketOpenStatus ***
         const currentlyMarketClosedByTime = !checkMarketOpenStatus(selectedPair);
         setIsMarketClosed(currentlyMarketClosedByTime); // true se fechado por horário, false caso contrário
 
@@ -95,8 +92,8 @@ export default function App() {
         setMarketMessage(analysis); // (Ex: "MERCADO FECHADO!")
         setIsMarketClosed(true); // Garante que o botão continue desabilitado
       } else if (!isReal) { // Se o sinal é simulado por outros motivos (API esgotada ou par não mapeado/OTC)
-        // Removido o aviso "Aviso: Viagem Simulada para ${selectedPair}. Dados reais indisponíveis agora."
-        setMarketMessage(''); // Limpa a mensagem se for simulado e não for por mercado fechado
+        // *** MUDANÇA AQUI: Mensagem mais específica para simulação em mercado aberto ***
+        setMarketMessage(`Aviso: Viagem Simulada para ${selectedPair}. Dados reais indisponíveis agora.`);
         setIsMarketClosed(false); // O botão NÃO deve ser desabilitado, pois não é um fechamento de mercado por horário
       } else { // Se o sinal é real (dados da API recebidos com sucesso)
         setMarketMessage(''); // Limpa qualquer mensagem de aviso
@@ -105,7 +102,8 @@ export default function App() {
       
       const token = localStorage.getItem('smoketrade_token');
       
-      const response = await fetch('http://localhost:5001/api/signals', {
+      // *** CORREÇÃO CRÍTICA AQUI: Usar VITE_API_URL para a requisição POST ***
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/signals`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,6 +142,7 @@ export default function App() {
   const removeSignal = async (signalIdToRemove) => {
     try {
       const token = localStorage.getItem('smoketrade_token');
+      // Já estava usando VITE_API_URL aqui, o que é correto
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/signals/${signalIdToRemove}`, {
         method: 'DELETE',
         headers: {

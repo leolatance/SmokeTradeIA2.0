@@ -5,6 +5,7 @@ const ALPHA_VANTAGE_KEYS = [
   import.meta.env.VITE_ALPHA_VANTAGE_KEY_3,
   import.meta.env.VITE_ALPHA_VANTAGE_KEY_4,
   import.meta.env.VITE_ALPHA_VANTAGE_KEY_5,
+  import.meta.env.VITE_ALPHA_VANTAGE_KEY_6,
 ].filter(Boolean);
 
 // Padrões históricos por par - Mantenha, são úteis como fallback e para limites do RSI
